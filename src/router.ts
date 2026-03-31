@@ -9,17 +9,24 @@ import { getCalendar } from "./calendarLookup.js";
 const app = new Hono();
 
 const postcodeSchema = z
-  .string()
-  .regex(/^\d{5}$/, "Postcode must be exactly 5 digits");
+    .string()
+    .regex(/^\d{5}$/, "Postcode must be exactly 5 digits");
 
 app.get("/calendar", async (c) => {
   const rawPostcode = c.req.query("postcode");
 
+  if (rawPostcode === undefined) {
+    return c.json(
+        { error: "validation_error", message: "postcode query parameter is required" },
+        400
+    );
+  }
+
   const parsed = postcodeSchema.safeParse(rawPostcode);
   if (!parsed.success) {
     return c.json(
-      { error: "validation_error", message: parsed.error.errors[0].message },
-      400
+        { error: "validation_error", message: parsed.error.issues[0].message },
+        400
     );
   }
 
@@ -28,10 +35,10 @@ app.get("/calendar", async (c) => {
   try {
     // Check DB cache first
     const cached = await db
-      .select()
-      .from(postcodeZones)
-      .where(eq(postcodeZones.postcode, postcode))
-      .limit(1);
+        .select()
+        .from(postcodeZones)
+        .where(eq(postcodeZones.postcode, postcode))
+        .limit(1);
 
     let zone: Zone;
 
@@ -41,22 +48,22 @@ app.get("/calendar", async (c) => {
       const location = await geocodeSwedishPostcode(postcode);
       if (!location) {
         return c.json(
-          {
-            error: "not_found",
-            message: `No location found for postcode ${postcode}`,
-          },
-          404
+            {
+              error: "not_found",
+              message: `No location found for postcode ${postcode}`,
+            },
+            404
         );
       }
 
       const resolvedZone = classifyZone(location.lat, location.lng);
       if (!resolvedZone) {
         return c.json(
-          {
-            error: "not_found",
-            message: `Postcode ${postcode} does not map to a Swedish growing zone`,
-          },
-          404
+            {
+              error: "not_found",
+              message: `Postcode ${postcode} does not map to a Swedish growing zone`,
+            },
+            404
         );
       }
 
@@ -76,8 +83,8 @@ app.get("/calendar", async (c) => {
   } catch (err) {
     console.error(err);
     return c.json(
-      { error: "internal_error", message: "An unexpected error occurred" },
-      500
+        { error: "internal_error", message: "An unexpected error occurred" },
+        500
     );
   }
 });

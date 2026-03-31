@@ -1,8 +1,7 @@
 import "dotenv/config";
-import { Hono } from "hono";
+import { serve } from "@hono/node-server";
+import app from "./router.js";
 
-const app = new Hono();
-
-app.get("/", (c) => c.text("growzone"));
-
-export default app;
+serve({ fetch: app.fetch, port: 3000 }, () => {
+  console.log("growzone listening on http://localhost:3000");
+});

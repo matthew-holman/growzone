@@ -1,10 +1,9 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
-import { db, postcodeZones } from "./db/index.js";
 import { geocodeSwedishPostcode } from "./geocoder.js";
 import { classifyZone, type Zone } from "./zoneClassifier.js";
 import { getCalendar } from "./calendarLookup.js";
+import { getZoneByPostcode, savePostcodeZone } from "./repositories/postcodeZoneRepository.js";
 
 const app = new Hono();
 
@@ -33,17 +32,11 @@ app.get("/calendar", async (c) => {
   const postcode = parsed.data;
 
   try {
-    // Check DB cache first
-    const cached = await db
-        .select()
-        .from(postcodeZones)
-        .where(eq(postcodeZones.postcode, postcode))
-        .limit(1);
-
     let zone: Zone;
 
-    if (cached.length > 0) {
-      zone = cached[0].zoneId as Zone;
+    const cached = await getZoneByPostcode(postcode);
+    if (cached !== null) {
+      zone = cached;
     } else {
       const location = await geocodeSwedishPostcode(postcode);
       if (!location) {
@@ -68,13 +61,7 @@ app.get("/calendar", async (c) => {
       }
 
       zone = resolvedZone;
-
-      await db.insert(postcodeZones).values({
-        postcode,
-        lat: String(location.lat),
-        lng: String(location.lng),
-        zoneId: zone,
-      });
+      await savePostcodeZone(postcode, location.lat, location.lng, zone);
     }
 
     const crops = getCalendar(zone);

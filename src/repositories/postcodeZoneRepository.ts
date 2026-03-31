@@ -1,0 +1,28 @@
+import { eq } from "drizzle-orm";
+import { db, postcodeZones } from "../db/index.js";
+import type { Zone } from "../zoneClassifier.js";
+
+export async function getZoneByPostcode(postcode: string): Promise<Zone | null> {
+  const rows = await db
+    .select()
+    .from(postcodeZones)
+    .where(eq(postcodeZones.postcode, postcode))
+    .limit(1);
+
+  if (rows.length === 0) return null;
+  return rows[0].zoneId as Zone;
+}
+
+export async function savePostcodeZone(
+  postcode: string,
+  lat: number,
+  lng: number,
+  zone: Zone
+): Promise<void> {
+  await db.insert(postcodeZones).values({
+    postcode,
+    lat: String(lat),
+    lng: String(lng),
+    zoneId: zone,
+  });
+}

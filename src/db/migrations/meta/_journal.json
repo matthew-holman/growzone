@@ -22,6 +22,27 @@
       "when": 1775130285633,
       "tag": "0002_busy_firedrake",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1776070499350,
+      "tag": "0003_useful_daredevil",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1776071777302,
+      "tag": "0004_perpetual_darkstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1776084963065,
+      "tag": "0005_green_night_thrasher",
+      "breakpoints": true
     }
   ]
 }

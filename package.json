@@ -7,7 +7,8 @@
     "dev": "tsx watch src/index.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:seed-postcodes": "tsx scripts/seedPostcodes.ts",
+    "db:seed-postcodes": "tsx scripts/seed-postcodes.ts",
+    "db:seed-stations": "tsx scripts/seed-stations.ts",
     "test": "vitest"
   },
   "repository": {

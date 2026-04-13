@@ -1,0 +1,1 @@
+ALTER TABLE "weather_stations" ALTER COLUMN "elevation_m" SET DATA TYPE numeric(7, 3);

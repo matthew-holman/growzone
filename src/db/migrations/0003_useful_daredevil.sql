@@ -1,0 +1,1 @@
+ALTER TABLE "postcode_zones" ALTER COLUMN "elevation_m" SET NOT NULL;

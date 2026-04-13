@@ -1,0 +1,191 @@
+{
+  "id": "5b30189a-9f6f-45be-8a79-731d56113517",
+  "prevId": "b5e0d94a-c412-450b-8d15-2ef2c9f6a1f2",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.postcode_zones": {
+      "name": "postcode_zones",
+      "schema": "",
+      "columns": {
+        "postcode": {
+          "name": "postcode",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "lat": {
+          "name": "lat",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lng": {
+          "name": "lng",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "zone_id": {
+          "name": "zone_id",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "place_name": {
+          "name": "place_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "admin_name1": {
+          "name": "admin_name1",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "elevation_m": {
+          "name": "elevation_m",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.weather_stations": {
+      "name": "weather_stations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lat": {
+          "name": "lat",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lng": {
+          "name": "lng",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "elevation_m": {
+          "name": "elevation_m",
+          "type": "numeric(6, 3)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_frost_doy": {
+          "name": "last_frost_doy",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_frost_p90": {
+          "name": "last_frost_p90",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "first_frost_doy": {
+          "name": "first_frost_doy",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "first_frost_p10": {
+          "name": "first_frost_p10",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "growing_days": {
+          "name": "growing_days",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gdd_annual": {
+          "name": "gdd_annual",
+          "type": "numeric(7, 1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gdd_p10": {
+          "name": "gdd_p10",
+          "type": "numeric(7, 1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gdd_p90": {
+          "name": "gdd_p90",
+          "type": "numeric(7, 1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gdd_cv": {
+          "name": "gdd_cv",
+          "type": "numeric(4, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "monthly_mean_temps": {
+          "name": "monthly_mean_temps",
+          "type": "numeric(4, 1)[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

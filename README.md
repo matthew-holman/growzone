@@ -46,19 +46,37 @@ npm run db:migrate
 
 ### 5. Seed postcode data
 
-Populates `postcode_zones` from the bundled GeoNames dataset (`src/data/postcodes/SE.zip`). Safe to re-run — existing rows are skipped.
+Postcode data is produced by the `swedish-climate-data` repository.
+Copy the enriched postcode file before running the seed script:
+
+```bash
+cp ../swedish-climate-data/output/postcodes-enriched.json src/data/
+```
+
+Then seed the database:
 
 ```bash
 npm run db:seed-postcodes
 ```
 
-### 6. Backfill elevation data
+Safe to re-run — existing rows are updated in place.
 
-Fetches elevation for every row in `postcode_zones` from the Open-Elevation API. Waits 1 second between requests. Run once after seeding.
+### 6. Seed weather stations
+
+Weather station climate data is produced by the `swedish-climate-data` repository.
+Copy the file before running the seed script:
 
 ```bash
-npx tsx scripts/backfill-elevation.ts
+cp ../swedish-climate-data/output/weather-stations.json src/data/
 ```
+
+Then seed:
+
+```bash
+npx tsx scripts/seed-stations.ts
+```
+
+Safe to re-run — existing rows are updated in place.
 
 ## Development
 

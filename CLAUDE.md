@@ -80,6 +80,21 @@ src/
 
 **Crop data is separate.** `src/data/crops.json` is data, not code. Do not import application utilities into it, do not inline its contents into application modules, and do not move it into the database prematurely.
 
+## Climate Resolution — Sign Conventions
+
+**`applyElevationCorrection` subtracts:** the formula is `value - (elevDeltaM / 100) * rate`. A positive rate *reduces* the value; a negative rate *increases* it.
+
+**Frost day rates must be passed with care** — the direction of the calendar effect is the opposite of the sign:
+
+| Field | Rate argument | Why |
+|---|---|---|
+| `lastFrostDoy`, `lastFrostP90` | `-FROST_DAYS_PER_100M` | Higher elevation → later spring frost → DOY must increase → negative rate |
+| `firstFrostDoy`, `firstFrostP10` | `+FROST_DAYS_PER_100M` | Higher elevation → earlier autumn frost → DOY must decrease → positive rate |
+
+Passing `+FROST_DAYS_PER_100M` for last frost or `-FROST_DAYS_PER_100M` for first frost silently inverts both corrections. The in-code comment in `src/services/climateResolver.ts` explains this with worked examples.
+
+**GDD and temperature** use positive rates and are not affected by this inversion risk — higher elevation always means fewer degree-days and lower temperatures.
+
 ## OpenAPI / @hono/zod-openapi Conventions
 
 The app uses `OpenAPIHono` throughout — never plain `Hono`. All routes are defined with `createRoute()` and registered with `app.openapi()`.

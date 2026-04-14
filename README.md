@@ -78,6 +78,16 @@ npx tsx scripts/seed-stations.ts
 
 Safe to re-run — existing rows are updated in place.
 
+### 7. Seed crops
+
+```bash
+npx tsx scripts/seed-crops.ts
+```
+
+Re-run whenever `src/data/crops-v2.json` is updated. The database is
+the source of truth — the JSON file is the initial dataset only.
+An admin UI for managing crops is planned for a future phase.
+
 ## Development
 
 ```bash

@@ -33,3 +33,40 @@ export const weatherStations = pgTable('weather_stations', {
                       .notNull()
                       .defaultNow(),
 });
+
+export const crops = pgTable('crops', {
+  id:                   text('id').primaryKey(),
+  nameSv:               text('name_sv').notNull(),
+  nameEn:               text('name_en').notNull(),
+  lifecycle:            text('lifecycle').notNull(),
+  frostTolerance:       text('frost_tolerance').notNull(),
+  minNightTempC:        smallint('min_night_temp_c'),
+  daylengthRequirement: text('daylength_requirement').notNull().default('neutral'),
+  notesSv:              text('notes_sv'),
+  notesEn:              text('notes_en'),
+  createdAt:            timestamp('created_at', { withTimezone: true })
+                          .notNull()
+                          .defaultNow(),
+});
+
+export const cropMethods = pgTable('crop_methods', {
+  id:                        text('id').primaryKey(),
+  cropId:                    text('crop_id')
+                               .notNull()
+                               .references(() => crops.id, { onDelete: 'cascade' }),
+  labelSv:                   text('label_sv').notNull(),
+  labelEn:                   text('label_en').notNull(),
+  germinationMinSoilTempC:   smallint('germination_min_soil_temp_c'),
+  germinationOptSoilTempC:   smallint('germination_opt_soil_temp_c'),
+  daysToGerminationMin:      smallint('days_to_germination_min'),
+  daysToGerminationMax:      smallint('days_to_germination_max'),
+  daysToMaturityMin:         smallint('days_to_maturity_min'),
+  daysToMaturityMax:         smallint('days_to_maturity_max'),
+  transplantTolerance:       text('transplant_tolerance').notNull(),
+  gddRequired:               smallint('gdd_required'),
+  plantBeforeFirstFrostDays: smallint('plant_before_first_frost_days'),
+  sortOrder:                 smallint('sort_order').notNull().default(0),
+  createdAt:                 timestamp('created_at', { withTimezone: true })
+                               .notNull()
+                               .defaultNow(),
+});

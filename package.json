@@ -9,6 +9,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed-postcodes": "tsx scripts/seed-postcodes.ts",
     "db:seed-stations": "tsx scripts/seed-stations.ts",
+    "db:seed-crops": "tsx scripts/seed-crops.ts",
     "test": "vitest"
   },
   "repository": {

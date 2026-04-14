@@ -1,0 +1,184 @@
+[
+  {
+    "id": "tomato",
+    "name": { "sv": "Tomat", "en": "Tomato" },
+    "lifecycle": "annual",
+    "frostTolerance": "none",
+    "minNightTempC": 10,
+    "daylengthRequirement": "neutral",
+    "notes": {
+      "sv": "Starta inomhus. Plantera ut först när nätterna är stabilt varma.",
+      "en": "Start indoors. Do not plant out until nights are reliably warm."
+    },
+    "methods": [
+      {
+        "id": "tomato-from-seed",
+        "label": { "sv": "Från frö", "en": "From seed" },
+        "germinationMinSoilTempC": 15,
+        "germinationOptSoilTempC": 24,
+        "daysToGerminationMin": 7,
+        "daysToGerminationMax": 14,
+        "daysToMaturityMin": 60,
+        "daysToMaturityMax": 90,
+        "transplantTolerance": "good",
+        "gddRequired": 1000,
+        "plantBeforeFirstFrostDays": null,
+        "sortOrder": 0
+      }
+    ]
+  },
+  {
+    "id": "potato",
+    "name": { "sv": "Potatis", "en": "Potato" },
+    "lifecycle": "annual",
+    "frostTolerance": "light",
+    "minNightTempC": null,
+    "daylengthRequirement": "neutral",
+    "notes": {
+      "sv": "Förgro utsädespotatis inomhus 4–6 veckor innan plantering.",
+      "en": "Chit seed potatoes indoors 4–6 weeks before planting."
+    },
+    "methods": [
+      {
+        "id": "potato-from-tuber",
+        "label": { "sv": "Från utsädespotatis", "en": "From seed tuber" },
+        "germinationMinSoilTempC": 8,
+        "germinationOptSoilTempC": 16,
+        "daysToGerminationMin": null,
+        "daysToGerminationMax": null,
+        "daysToMaturityMin": 90,
+        "daysToMaturityMax": 120,
+        "transplantTolerance": "direct-only",
+        "gddRequired": 800,
+        "plantBeforeFirstFrostDays": null,
+        "sortOrder": 0
+      }
+    ]
+  },
+  {
+    "id": "carrot",
+    "name": { "sv": "Morot", "en": "Carrot" },
+    "lifecycle": "annual",
+    "frostTolerance": "light",
+    "minNightTempC": null,
+    "daylengthRequirement": "neutral",
+    "notes": {
+      "sv": "Direktså. Transplanteras inte — pålroten skadas lätt.",
+      "en": "Direct sow only. Do not transplant — the taproot is easily damaged."
+    },
+    "methods": [
+      {
+        "id": "carrot-direct",
+        "label": { "sv": "Direktsådd", "en": "Direct sow" },
+        "germinationMinSoilTempC": 7,
+        "germinationOptSoilTempC": 16,
+        "daysToGerminationMin": 14,
+        "daysToGerminationMax": 21,
+        "daysToMaturityMin": 70,
+        "daysToMaturityMax": 80,
+        "transplantTolerance": "none",
+        "gddRequired": 600,
+        "plantBeforeFirstFrostDays": null,
+        "sortOrder": 0
+      }
+    ]
+  },
+  {
+    "id": "peas",
+    "name": { "sv": "Ärtor", "en": "Peas" },
+    "lifecycle": "annual",
+    "frostTolerance": "hard",
+    "minNightTempC": null,
+    "daylengthRequirement": "neutral",
+    "notes": {
+      "sv": "Direktså så tidigt som möjligt — ärtor trivs i kyla och missgynnas av värme.",
+      "en": "Direct sow as early as possible — peas thrive in cool conditions and dislike heat."
+    },
+    "methods": [
+      {
+        "id": "peas-direct",
+        "label": { "sv": "Direktsådd", "en": "Direct sow" },
+        "germinationMinSoilTempC": 5,
+        "germinationOptSoilTempC": 15,
+        "daysToGerminationMin": 7,
+        "daysToGerminationMax": 14,
+        "daysToMaturityMin": 60,
+        "daysToMaturityMax": 70,
+        "transplantTolerance": "none",
+        "gddRequired": 500,
+        "plantBeforeFirstFrostDays": null,
+        "sortOrder": 0
+      }
+    ]
+  },
+  {
+    "id": "onion",
+    "name": { "sv": "Lök", "en": "Onion" },
+    "lifecycle": "annual",
+    "frostTolerance": "light",
+    "minNightTempC": null,
+    "daylengthRequirement": "long",
+    "notes": {
+      "sv": "Långdagsväxt — kräver långa sommardagar för att bilda lök.",
+      "en": "Long-day plant — requires long summer days to form bulbs."
+    },
+    "methods": [
+      {
+        "id": "onion-from-seed",
+        "label": { "sv": "Från frö", "en": "From seed" },
+        "germinationMinSoilTempC": 7,
+        "germinationOptSoilTempC": 24,
+        "daysToGerminationMin": 10,
+        "daysToGerminationMax": 14,
+        "daysToMaturityMin": 100,
+        "daysToMaturityMax": 175,
+        "transplantTolerance": "good",
+        "gddRequired": 900,
+        "plantBeforeFirstFrostDays": null,
+        "sortOrder": 0
+      },
+      {
+        "id": "onion-from-sets",
+        "label": { "sv": "Från sättlök", "en": "From sets" },
+        "germinationMinSoilTempC": 7,
+        "germinationOptSoilTempC": null,
+        "daysToGerminationMin": null,
+        "daysToGerminationMax": null,
+        "daysToMaturityMin": 60,
+        "daysToMaturityMax": 80,
+        "transplantTolerance": "direct-only",
+        "gddRequired": 600,
+        "plantBeforeFirstFrostDays": null,
+        "sortOrder": 1
+      }
+    ]
+  },
+  {
+    "id": "garlic",
+    "name": { "sv": "Vitlök", "en": "Garlic" },
+    "lifecycle": "overwintered",
+    "frostTolerance": "hard",
+    "minNightTempC": null,
+    "daylengthRequirement": "neutral",
+    "notes": {
+      "sv": "Planteras på hösten innan marken fryser. Behöver köldperiod för att utveckla klyftor.",
+      "en": "Plant in autumn before ground freezes. Requires a cold period to develop cloves."
+    },
+    "methods": [
+      {
+        "id": "garlic-overwintered",
+        "label": { "sv": "Höstplantering", "en": "Autumn planting" },
+        "germinationMinSoilTempC": null,
+        "germinationOptSoilTempC": null,
+        "daysToGerminationMin": null,
+        "daysToGerminationMax": null,
+        "daysToMaturityMin": null,
+        "daysToMaturityMax": null,
+        "transplantTolerance": "direct-only",
+        "gddRequired": null,
+        "plantBeforeFirstFrostDays": 21,
+        "sortOrder": 0
+      }
+    ]
+  }
+]

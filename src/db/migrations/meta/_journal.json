@@ -43,6 +43,13 @@
       "when": 1776084963065,
       "tag": "0005_green_night_thrasher",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1776087738145,
+      "tag": "0006_short_chameleon",
+      "breakpoints": true
     }
   ]
 }

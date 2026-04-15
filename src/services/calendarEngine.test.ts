@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
+import type { ClimateProfile, MethodCalendar } from '../types/climate.js'
 import {
   generateCalendar,
   dayOfYearToCalendarDate,
@@ -9,7 +10,6 @@ import {
   resolveOverwinteredCalendar,
 } from './calendarEngine.js'
 import type { CropRecord, CropMethod, CropWithMethods } from './calendarEngine.js'
-import type { ClimateProfile, MethodCalendar } from '../types/climate.js'
 
 // ---------------------------------------------------------------------------
 // Fixtures

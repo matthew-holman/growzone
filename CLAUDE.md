@@ -13,17 +13,40 @@ Growzone is a Swedish grow calendar API. A user provides a Swedish postcode and 
 - **Database**: PostgreSQL via Drizzle ORM
 - **Validation**: Zod — used at API boundaries and to validate data files at startup
 - **Testing**: Vitest
-- **Postcode data**: GeoNames `SE.zip` (CC BY 4.0, attribution to geonames.org required) — loaded from `src/data/postcodes/SE.zip` at startup into an in-memory Map. No external API calls at runtime.
+- **Postcode data**: Seeded from the `swedish-climate-data` pipeline into `postcode_zones`. No flat files loaded at runtime.
 
-## Architecture and Key Decisions
+## Architecture — current state
+
+The calendar pipeline has three stages:
+
+1. `src/services/stationLookup.ts`
+   Resolves a postcode to its 3 nearest SMHI weather stations using
+   a Haversine SQL query against the weather_stations table.
+
+2. `src/services/climateResolver.ts`
+   Derives a ClimateProfile from the postcode's elevation and the
+   3 nearest stations using inverse distance weighting and elevation
+   lapse rate correction. Pure functions, no database dependency.
+
+3. `src/services/calendarEngine.ts`
+   Generates a growing calendar for all crops in the database from
+   the resolved ClimateProfile. Pure functions, no database dependency.
+
+The old zone classifier and zone-based crop data have been removed.
+Do not reintroduce zone-based logic. All climate reasoning is derived
+from real SMHI station data.
+
+## Planned improvements
+
+- Persist resolved ClimateProfile to postcode_zones to avoid
+  recomputing on every request. The ClimateProfile type already
+  includes postcode as a field for this reason.
+- Admin UI for managing crops and crop methods.
+- Support for perennial lifecycle crops (strawberry, raspberry etc).
+
+## Architecture decisions
 
 **Monolith.** This is a single deployable unit. Do not suggest microservices, separate services, or splitting modules into independent deployables.
-
-**Zone classifier is a pure function.** `src/zoneClassifier.ts` exports a single function `(lat: number, lng: number) => Zone | null`. It must remain pure — no DB access, no HTTP calls, no side effects. It must be independently testable without any test setup. Sweden's 5 zones are determined by latitude ranges; the classifier encodes that logic directly.
-
-**Crop calendar data lives in `src/data/crops.json`.** This file is validated against a Zod schema at application startup. If it fails validation, the process must not start. Crop data is not stored in the database at this stage. It is the authoritative source for all horticultural logic and will be reviewed externally — keep it strictly separate from application code.
-
-**Postcode lookup is local and synchronous.** `src/postcodeDb.ts` loads `SE.zip` at startup into a `Map<string, { lat, lng }>`. `lookupPostcode(postcode)` is a pure synchronous function — no network calls, no async. The resolved `lat`, `lng`, and `zone_id` are written to `postcode_zones` on first use and served from the DB on subsequent requests. Run `npm run db:seed-postcodes` to pre-populate all ~16,000 Swedish postcodes upfront.
 
 **No in-process caching.** Do not introduce `Map`-based TTL caches, node-cache, Redis, or any other caching layer. PostgreSQL is the only data store. If performance becomes a concern, address it at the database level.
 
@@ -51,21 +74,24 @@ The `users` table stores:
 src/
   index.ts            — entry point, starts the Hono server
   router.ts           — mounts domain routers, registers /openapi.json and /docs
-  zoneClassifier.ts   — pure zone resolution function: (lat, lng) => Zone | null
-  postcodeDb.ts       — loads SE.zip at startup, exposes lookupPostcode(postcode): PostcodeLocation | null
-  calendarLookup.ts   — loads crops.json at startup, validates with Zod, exposes query functions
   routes/
     calendar.ts       — /calendar route: schemas, route definition, handler
+  services/
+    stationLookup.ts  — resolves postcode → 3 nearest SMHI stations
+    climateResolver.ts — derives ClimateProfile from stations + elevation
+    calendarEngine.ts — generates growing calendar from ClimateProfile + crops
+  repositories/
+    cropRepository.ts      — fetches all crops + methods from the database
+    stationRepository.ts   — weather_stations table queries
   db/
     schema.ts         — Drizzle schema definitions
     migrations/       — generated migration files
+  types/
+    climate.ts        — ClimateProfile, CalendarWindow, MethodCalendar, CropCalendar
   data/
-    crops.json        — crop × zone calendar data (source of truth for horticultural logic)
-    postcodes/
-      SE.zip          — GeoNames Swedish postcode dataset (CC BY 4.0, geonames.org)
-  scripts/
-    seedPostcodes.ts  — one-off script to bulk-insert all postcodes into postcode_zones
-  zoneClassifier.test.ts — unit tests for the zone classifier
+    postcodes/        — postcode input files (used by seed scripts only)
+scripts/
+  seed-stations.ts    — one-off script to bulk-insert SMHI weather stations
 ```
 
 ## Conventions
@@ -74,11 +100,9 @@ src/
 
 **Structured errors.** All error responses use the shape `{ error: string, message: string }`. Never let raw exceptions propagate to the HTTP response. Never return unstructured 500s.
 
-**Routes orchestrate; modules do the work.** Route handlers call into `geocoder`, `zoneClassifier`, `calendarLookup`, and db modules — they do not contain business logic themselves.
+**Routes orchestrate; modules do the work.** Route handlers call into `stationLookup`, `climateResolver`, `calendarEngine`, and repository modules — they do not contain business logic themselves.
 
-**Pure functions preferred.** Side effects (database writes, HTTP calls) are pushed to the edges. Core logic — zone classification, calendar lookup — must be pure and independently testable.
-
-**Crop data is separate.** `src/data/crops.json` is data, not code. Do not import application utilities into it, do not inline its contents into application modules, and do not move it into the database prematurely.
+**Pure functions preferred.** Side effects (database writes, HTTP calls) are pushed to the edges. Core logic — climate resolution, calendar generation — must be pure and independently testable.
 
 ## Climate Resolution — Sign Conventions
 
@@ -119,37 +143,53 @@ app.use("/docs", Scalar({ url: "/openapi.json" }));
 
 ## Current Phase
 
-Phase 1 MVP. The immediate deliverable is a single `GET /calendar?postcode=` endpoint that:
+The `GET /calendar?postcode=` endpoint is live. It:
 
-1. Geocodes the postcode via Nominatim
-2. Resolves the climate zone using the zone classifier
-3. Looks up and returns a crop calendar from `crops.json`
-
-The PostgreSQL schema and Drizzle setup must be scaffolded in this phase even though the current endpoint does not write to the database. The signup flow (next phase) will need it.
+1. Looks up the postcode location (lat, lng, elevationM) from `postcode_zones`
+2. Queries the 3 nearest SMHI weather stations by Haversine distance
+3. Derives a `ClimateProfile` using inverse distance weighting + elevation correction
+4. Fetches all crops and methods from the database
+5. Returns a structured growing calendar
 
 ## Data management
 
 Crop data is stored in the `crops` and `crop_methods` database tables.
-The initial dataset is seeded from `src/data/crops-v2.json` via:
+The database is the authoritative source of truth.
 
-  npx tsx scripts/seed-crops.ts
+Postcode and weather station data are seeded from JSON files produced by
+the `swedish-climate-data` repository. Those files are never edited
+manually — regenerate them by running the climate pipeline and copying
+the output, then run `npm run db:seed-stations`.
 
-The JSON file is useful for horticultural review — a domain expert can
-read and annotate it without database access. Once an admin UI is built,
-the database becomes the source of truth and the JSON file is retired.
-The admin UI is explicitly out of scope for the current phase. Do not
-build admin routes, authentication, or management interfaces until that
-work is scoped separately.
+## Admin routes
 
-Postcode and weather station data follow the same pattern — seeded from
-JSON files produced by the swedish-climate-data repository. Those files
-are never edited manually. They are regenerated by running the climate
-pipeline and copying the output.
+CRUD routes for managing crop data are available under `/admin/crops`.
+These are local development routes — no authentication is required
+at this stage. Authentication should be added before any deployment.
 
-`src/data/crops.json` and the code that reads it remain in place until
-the new calendar engine is built. Do not modify `crops.json` or the
-existing calendar lookup. They will be removed in a dedicated cleanup
-ticket once the new engine is complete.
+Routes:
+```
+GET    /admin/crops
+GET    /admin/crops/:id
+POST   /admin/crops
+PUT    /admin/crops/:id
+DELETE /admin/crops/:id
+
+GET    /admin/crops/:id/methods
+POST   /admin/crops/:id/methods
+PUT    /admin/crops/:id/methods/:mid
+DELETE /admin/crops/:id/methods/:mid
+```
+
+Validation schemas live in `src/validators/cropValidators.ts`.
+Database operations live in `src/repositories/cropRepository.ts`.
+Route handlers live in `src/routes/adminCrops.ts`.
+
+Note: `DELETE /admin/crops/:id` cascades to all methods via the
+database foreign key constraint — no application-level cascade needed.
+
+The admin router uses plain `Hono` (not `OpenAPIHono`) and is not
+included in the OpenAPI spec.
 
 ## Out of Scope
 

@@ -297,7 +297,7 @@ function firstDayAboveSoilTemp(
 function computeWeeksIndoors(profile: ClimateProfile, method: CropMethod): number {
   const totalDaysNeeded = (method.daysToGerminationMax ?? 0) + (method.daysToMaturityMax ?? 0)
   const deficit = totalDaysNeeded - profile.growingDays
-  if (deficit <= 0) return 0
+  if (deficit <= 0) {return 0}
   return Math.ceil(deficit / 7) + 2
 }
 

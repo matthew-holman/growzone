@@ -1,6 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { Scalar } from "@scalar/hono-api-reference";
 import { cors } from 'hono/cors'
+import adminCrops from "./routes/adminCrops.js";
 import calendar from "./routes/calendar.js";
 
 const app = new OpenAPIHono();
@@ -19,6 +20,7 @@ app.use(
 )
 
 app.route("/", calendar);
+app.route("/admin/crops", adminCrops);
 
 app.doc("/openapi.json", {
   openapi: "3.0.0",

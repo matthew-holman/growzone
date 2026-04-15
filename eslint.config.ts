@@ -25,6 +25,7 @@ const config: import('@eslint/config-helpers').InfiniteConfigArray = [
         languageOptions: {
             parserOptions: {
                 project: true,
+                // @ts-ignore
                 tsconfigRootDir: import.meta.dirname,
             },
 

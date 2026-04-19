@@ -6,6 +6,7 @@
     "frostTolerance": "none",
     "minNightTempC": 10,
     "daylengthRequirement": "neutral",
+    "gddBaseTempC": 10,
     "notes": {
       "sv": "Starta inomhus. Plantera ut först när nätterna är stabilt varma.",
       "en": "Start indoors. Do not plant out until nights are reliably warm."
@@ -21,7 +22,9 @@
         "daysToMaturityMin": 60,
         "daysToMaturityMax": 90,
         "transplantTolerance": "good",
-        "gddRequired": 1000,
+        "gddToMaturity": 1000,
+        "gddToMaturityP10": null,
+        "weeksIndoorBeforeLastFrost": null,
         "plantBeforeFirstFrostDays": null,
         "sortOrder": 0
       }
@@ -34,6 +37,7 @@
     "frostTolerance": "light",
     "minNightTempC": null,
     "daylengthRequirement": "neutral",
+    "gddBaseTempC": 7,
     "notes": {
       "sv": "Förgro utsädespotatis inomhus 4–6 veckor innan plantering.",
       "en": "Chit seed potatoes indoors 4–6 weeks before planting."
@@ -49,7 +53,9 @@
         "daysToMaturityMin": 90,
         "daysToMaturityMax": 120,
         "transplantTolerance": "direct-only",
-        "gddRequired": 800,
+        "gddToMaturity": 800,
+        "gddToMaturityP10": null,
+        "weeksIndoorBeforeLastFrost": null,
         "plantBeforeFirstFrostDays": null,
         "sortOrder": 0
       }
@@ -62,6 +68,7 @@
     "frostTolerance": "light",
     "minNightTempC": null,
     "daylengthRequirement": "neutral",
+    "gddBaseTempC": 5,
     "notes": {
       "sv": "Direktså. Transplanteras inte — pålroten skadas lätt.",
       "en": "Direct sow only. Do not transplant — the taproot is easily damaged."
@@ -77,7 +84,9 @@
         "daysToMaturityMin": 70,
         "daysToMaturityMax": 80,
         "transplantTolerance": "none",
-        "gddRequired": 600,
+        "gddToMaturity": 600,
+        "gddToMaturityP10": null,
+        "weeksIndoorBeforeLastFrost": null,
         "plantBeforeFirstFrostDays": null,
         "sortOrder": 0
       }
@@ -90,6 +99,7 @@
     "frostTolerance": "hard",
     "minNightTempC": null,
     "daylengthRequirement": "neutral",
+    "gddBaseTempC": 5,
     "notes": {
       "sv": "Direktså så tidigt som möjligt — ärtor trivs i kyla och missgynnas av värme.",
       "en": "Direct sow as early as possible — peas thrive in cool conditions and dislike heat."
@@ -105,7 +115,9 @@
         "daysToMaturityMin": 60,
         "daysToMaturityMax": 70,
         "transplantTolerance": "none",
-        "gddRequired": 500,
+        "gddToMaturity": 500,
+        "gddToMaturityP10": null,
+        "weeksIndoorBeforeLastFrost": null,
         "plantBeforeFirstFrostDays": null,
         "sortOrder": 0
       }
@@ -118,6 +130,7 @@
     "frostTolerance": "light",
     "minNightTempC": null,
     "daylengthRequirement": "long",
+    "gddBaseTempC": 5,
     "notes": {
       "sv": "Långdagsväxt — kräver långa sommardagar för att bilda lök.",
       "en": "Long-day plant — requires long summer days to form bulbs."
@@ -133,7 +146,9 @@
         "daysToMaturityMin": 100,
         "daysToMaturityMax": 175,
         "transplantTolerance": "good",
-        "gddRequired": 900,
+        "gddToMaturity": 900,
+        "gddToMaturityP10": null,
+        "weeksIndoorBeforeLastFrost": null,
         "plantBeforeFirstFrostDays": null,
         "sortOrder": 0
       },
@@ -147,7 +162,9 @@
         "daysToMaturityMin": 60,
         "daysToMaturityMax": 80,
         "transplantTolerance": "direct-only",
-        "gddRequired": 600,
+        "gddToMaturity": 600,
+        "gddToMaturityP10": null,
+        "weeksIndoorBeforeLastFrost": null,
         "plantBeforeFirstFrostDays": null,
         "sortOrder": 1
       }
@@ -160,6 +177,7 @@
     "frostTolerance": "hard",
     "minNightTempC": null,
     "daylengthRequirement": "neutral",
+    "gddBaseTempC": 5,
     "notes": {
       "sv": "Planteras på hösten innan marken fryser. Behöver köldperiod för att utveckla klyftor.",
       "en": "Plant in autumn before ground freezes. Requires a cold period to develop cloves."
@@ -175,7 +193,9 @@
         "daysToMaturityMin": null,
         "daysToMaturityMax": null,
         "transplantTolerance": "direct-only",
-        "gddRequired": null,
+        "gddToMaturity": null,
+        "gddToMaturityP10": null,
+        "weeksIndoorBeforeLastFrost": null,
         "plantBeforeFirstFrostDays": 21,
         "sortOrder": 0
       }
